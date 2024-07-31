@@ -114,6 +114,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_METHODS = (
     "DELETE",
