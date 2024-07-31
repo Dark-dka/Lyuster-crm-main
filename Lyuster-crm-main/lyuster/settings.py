@@ -49,14 +49,14 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'django_filters',
     'corsheaders',
-    # apps
+    'whitenoise',
 
+    # apps
     'users',
     'dashboard',
     'products',
 
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -104,10 +104,10 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -116,9 +116,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
@@ -127,6 +128,7 @@ CORS_ALLOW_METHODS = (
     "POST",
     "PUT",
 )
+
 CORS_ALLOW_HEADERS = (
     "accept",
     "authorization",
