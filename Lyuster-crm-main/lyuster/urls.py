@@ -19,8 +19,8 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from users.views import UserProfileView
 
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
+from drf_yasg import openapi   # type: ignore
+from drf_yasg.views import get_schema_view   # type: ignore
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -36,7 +36,7 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=(permissions.AllowAny,), # type: ignore
 )
 
 urlpatterns = [
