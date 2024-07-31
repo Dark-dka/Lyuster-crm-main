@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from users.views import UserProfileView
+from rest_framework import permissions
 
 from drf_yasg import openapi   # type: ignore
 from drf_yasg.views import get_schema_view   # type: ignore
