@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -40,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    date_joined = models.DateTimeField(default=timezone.now)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     status = models.CharField(max_length=255)

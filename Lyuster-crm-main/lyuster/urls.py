@@ -1,29 +1,35 @@
-"""
-URL configuration for lyuster project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from drf_yasg import openapi # type: ignore
-from drf_yasg.views import get_schema_view # type: ignore
+from drf_yasg import openapi  # type: ignore
+from drf_yasg.views import get_schema_view  # type: ignore
 from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from users.views import UserProfileView
+from lyuster.serializers import CustomTokenObtainPairSerializer
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from users.models import UserProfile
+from .serializers import UserProfileSerializer
+from rest_framework.exceptions import NotFound
+
+
+class UserProfileView(generics.RetrieveAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        user = self.request.user
+        try:
+            return UserProfile.objects.get(user=user)
+        except UserProfile.DoesNotExist:
+            raise NotFound("UserProfile does not exist for this user.")
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -40,7 +46,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/profile/', UserProfileView.as_view(), name='user_profile'),
     path('api/', include('products.urls')),
@@ -49,7 +55,6 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui(  # new
         'redoc', cache_timeout=0), name='schema-redoc'),
 ]
-
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

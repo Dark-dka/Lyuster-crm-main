@@ -46,3 +46,4 @@ class Order(models.Model):
     initial_quantity = models.IntegerField()
     left_quantity = models.PositiveIntegerField()
     sold_date = models.DateField(default=timezone.now)
+

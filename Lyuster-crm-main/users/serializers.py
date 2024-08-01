@@ -1,13 +1,22 @@
 from rest_framework import serializers
 
 from .models import User, UserProfile
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['is_staff'] = self.user.is_staff
+
+        return data
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
-            'first_name', 'last_name', 'status', 'role', 'country',
+            'first_name', 'last_name', 'status', 'role', 'country', 'date_joined',
             'languages_known', 'phone_number', 'telegram', 'email', 'location'  # Yangi location maydoni
         ]
 
