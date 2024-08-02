@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from lyuster.serializers import CustomTokenObtainPairSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from users.models import UserProfile
+from users.models import User
 from .serializers import UserProfileSerializer
 from rest_framework.exceptions import NotFound
 
@@ -22,8 +22,8 @@ class UserProfileView(generics.RetrieveAPIView):
     def get_object(self):
         user = self.request.user
         try:
-            return UserProfile.objects.get(user=user)
-        except UserProfile.DoesNotExist:
+            return user
+        except User.DoesNotExist:
             raise NotFound("UserProfile does not exist for this user.")
 
 
