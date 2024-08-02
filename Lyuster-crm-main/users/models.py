@@ -23,6 +23,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
     date_joined = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField()
+
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    role = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=20)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -42,15 +48,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     date_joined = models.DateTimeField(default=timezone.now)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
-    role = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     languages_known = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=20)
     telegram = models.CharField(max_length=255)
-    email = models.EmailField()
     location = models.CharField(max_length=255, blank=True)  # Yangi location maydoni
 
     def __str__(self):

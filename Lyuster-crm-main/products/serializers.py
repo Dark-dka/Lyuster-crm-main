@@ -36,5 +36,5 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class ProductCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('name', 'description', 'category', 'price', 'quantity', 'profit')
+        fields = '__all__'
         model = Product
