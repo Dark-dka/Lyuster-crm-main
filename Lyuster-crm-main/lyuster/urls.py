@@ -50,6 +50,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/profile/', UserProfileView.as_view(), name='user_profile'),
     path('api/', include('products.urls')),
+    path('api/', include('user_view.urls')),
     path('swagger/', schema_view.with_ui(  # new
         'swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui(  # new

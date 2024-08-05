@@ -1,13 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status, generics, permissions
 from .models import User
-from .serializers import UserProfileSerializer
+from .serializers import UserProfileSerializer, CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import status
-from rest_framework import generics, permissions
-from .serializers import CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
