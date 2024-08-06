@@ -1,15 +1,55 @@
 from rest_framework import generics
 from rest_framework import viewsets
 
-from .models import Product, Mahsulotlar, Order
+from .models import Cart, Product, Mahsulotlar, Order
 from .permissions import IsSuperUserOrReadOnly
-from .serializers import ProductSerializer, MahsulotlarSerializer, OrderSerializer, ProductCreateSerializer
+from .serializers import CartSerializer, ProductSerializer, MahsulotlarSerializer, OrderSerializer, ProductCreateSerializer
 import datetime
 from django.utils import timezone
 from django.db.models import Sum, F
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+
+
+
+
+
+
+class ProductListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer = ProductSerializer
+
+class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer = ProductSerializer
+
+class CartRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Cart.objects.all()
+    serializer = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return Cart.objects.get(user=self.request.user)
+
+
+
+class OrderListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
 
 
 class ProductViewSet(viewsets.ModelViewSet):
