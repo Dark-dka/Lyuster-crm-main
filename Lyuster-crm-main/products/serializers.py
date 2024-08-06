@@ -18,7 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['price'] = f"${instance.price:,.2f}"
+        representation['price'] = f"{instance.price:,.2f}"
         return representation
 
 
