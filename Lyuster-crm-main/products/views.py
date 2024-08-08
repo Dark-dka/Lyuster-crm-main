@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.decorators import action
 
 from .models import Cart, Product, Mahsulotlar, Order
 from .permissions import IsSuperUserOrReadOnly
@@ -34,19 +35,41 @@ class CartRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         return Cart.objects.get(user=self.request.user)
 
 
-
-class OrderListCreateAPIView(generics.ListCreateAPIView):
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        """GET /orders/ - List all orders"""
+        orders = self.get_queryset()
+        serializer = self.get_serializer(orders, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        """GET /orders/{id}/ - Retrieve a specific order"""
+        order = self.get_object()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        """POST /orders/ - Create a new order"""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    # Save the order and associate it with the current user
+        order = serializer.save(user=self.request.user)
+        
+        # Update the sold quantity for each product in the order
+        for order_product in order.orderproduct_set.all():
+            product = order_product.product
+            product.sold_quantity += order_product.quantity
+            product.save()
+            
+    
 
 
 

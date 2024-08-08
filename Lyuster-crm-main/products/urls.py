@@ -1,19 +1,20 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CartRetrieveUpdateAPIView, OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView, ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, ProductViewSet, MahsulotlarViewSet, OrderList, ProductCreate, OrderCreate, FinancialDataAPIView
+from .views import CartRetrieveUpdateAPIView, OrderViewSet, ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, ProductViewSet, MahsulotlarViewSet, OrderList, ProductCreate, OrderCreate, FinancialDataAPIView
+
 
 router = DefaultRouter()
 router.register(r'products', ProductViewSet)
 router.register(r'mahsulotlar', MahsulotlarViewSet)
+router.register(r'orders', OrderViewSet)
+
 
 urlpatterns = [
-
 
     path('products/', ProductListCreateAPIView.as_view(), name='product-list-create'),
     path('products/<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product-detail'),
     path('cart/', CartRetrieveUpdateAPIView.as_view(), name='cart-detail'),
-    path('orders/', OrderListCreateAPIView.as_view(), name='order-list-create'),
-    path('orders/<int:pk>/', OrderRetrieveUpdateDestroyAPIView.as_view(), name='order-detail'),
+
 
 
     path('', include(router.urls)),
