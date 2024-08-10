@@ -60,7 +60,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name']  # Include fields as needed
+        fields = '__all__'  # Include fields as needed
 
 
     def validate_price(self, value):
