@@ -2,9 +2,9 @@ from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
-from .models import Cart, Product, Mahsulotlar, Order
+from .models import Cart, ClientsProductView, Product, Mahsulotlar, Order
 from .permissions import IsSuperUserOrReadOnly
-from .serializers import CartSerializer, ProductSerializer, MahsulotlarSerializer, OrderSerializer, ProductCreateSerializer
+from .serializers import CartSerializer, ClientsProductViewSerializer, ProductSerializer, MahsulotlarSerializer, OrderSerializer, ProductCreateSerializer
 import datetime
 from django.utils import timezone
 from django.db.models import Sum, F
@@ -15,6 +15,21 @@ from rest_framework.permissions import IsAuthenticated
 
 
 
+
+class ClientsProductViewSet(viewsets.ModelViewSet):
+    queryset = ClientsProductView.objects.all()
+    serializer_class = ClientsProductViewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        instance.delete()
+        
 
 
 

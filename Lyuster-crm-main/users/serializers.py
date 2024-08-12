@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserProfile
+from .models import ClientUser, User, UserProfile
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -15,6 +15,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'first_name', 'last_name', 'status', 'role', 'country', 'date_joined',
             'languages_known', 'phone_number', 'telegram', 'email', 'location'
         ]
+
+
+class ClientUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientUser
+        fields = '__all__'
+        
 
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer()

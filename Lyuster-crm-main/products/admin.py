@@ -1,6 +1,16 @@
 from django.contrib import admin
-from .models import Cart, CartItem, OrderItem, Product, Mahsulotlar, Order
+from .models import Cart, CartItem, ClientsProductView, OrderItem, Product, Mahsulotlar, Order
 
+
+
+@admin.register(ClientsProductView)
+class ClientsProductViewAdmin(admin.ModelAdmin):
+    list_display = ('client_user', 'sale_date', 'seller_user', 'products')
+    search_fields = ('client_user__first_name', 'client_user__last_name', 'seller_user__username', 'products__name')
+    list_filter = ('sale_date', 'seller_user')
+
+    autocomplete_fields = ['client_user', 'seller_user', 'products']
+    
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

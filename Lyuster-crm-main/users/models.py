@@ -56,3 +56,19 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.status}" 
+
+
+
+class ClientUser(models.Model):
+
+    first_name = models.CharField(max_length=222)
+    last_name = models.CharField(max_length=222)
+    image = models.ImageField(upload_to="clients/image/")
+    phone_number = models.CharField(max_length=13)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Client: {self.first_name}"
+    
+    

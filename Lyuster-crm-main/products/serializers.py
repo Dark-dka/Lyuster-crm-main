@@ -5,7 +5,7 @@ from rest_framework import serializers
 from user_view.serializers import UserSerializer
 
 
-from .models import Cart, CartItem, OrderItem, OrderProduct, Product, Mahsulotlar, Order
+from .models import Cart, CartItem, ClientsProductView, OrderItem, OrderProduct, Product, Mahsulotlar, Order
 
 
 
@@ -52,7 +52,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 
-
+class ClientsProductViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientsProductView
+        fields = '__all__'
 
 
 
@@ -60,7 +63,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'  # Include fields as needed
+        fields = '__all__'
 
 
     def validate_price(self, value):

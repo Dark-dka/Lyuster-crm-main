@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from users.models import User
+from users.models import User, ClientUser
 
 
 class Mahsulotlar(models.Model):
@@ -62,7 +62,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username}"
-    
+
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -81,5 +81,20 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} ({self.quantity})"
+    
+    
+
+
+
+class ClientsProductView(models.Model):
+
+    client_user = models.ForeignKey(to=ClientUser, on_delete=models.CASCADE)    
+    sale_date = models.DateTimeField(auto_now_add=True)
+    seller_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    products = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.client_user} userga"
+    
     
     

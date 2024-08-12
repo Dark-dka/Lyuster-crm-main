@@ -1,7 +1,26 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import User, UserProfile
+from .models import ClientUser, User, UserProfile
+from django.utils.html import format_html
+
+
+
+@admin.register(ClientUser)
+class ClientUserAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'phone_number', 'created_at')
+    search_fields = ('first_name', 'last_name', 'phone_number')
+    list_filter = ('created_at',)
+
+    def image_tag(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="width: 50px; height: 50px;" />', obj.image.url)
+        return None
+
+    image_tag.short_description = 'Image'
+    list_display = ('first_name', 'last_name', 'phone_number', 'created_at', 'image_tag')
+
+
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
